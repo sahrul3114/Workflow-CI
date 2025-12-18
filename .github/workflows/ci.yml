@@ -16,8 +16,6 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
-          python-version: 3.12
-          activate-environment: ""
           use-mamba: true
 
       - name: Install MLflow
