@@ -12,10 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: 3.12.7
+          auto-update-conda: true
+          python-version: 3.12
+          activate-environment: ""
+          use-mamba: true
 
       - name: Install MLflow
         run: pip install mlflow==2.19.0
