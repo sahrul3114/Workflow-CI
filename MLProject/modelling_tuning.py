@@ -54,23 +54,22 @@ grid.fit(X_train, y_train)
 
 best_model = grid.best_estimator_
 
-# MLflow 
+# SET EXPERIMENT (WAJIB)
 mlflow.set_experiment("Skilled_Modelling_Tuning")
 
-with mlflow.start_run():
-    mlflow.log_params(grid.best_params_)
+mlflow.log_params(grid.best_params_)
 
-    mlflow.sklearn.log_model(
-        best_model,
-        artifact_path="model"
-    )
+mlflow.sklearn.log_model(
+    best_model,
+    artifact_path="model"
+)
 
-    y_pred = best_model.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
+y_pred = best_model.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
 
-    mlflow.log_metric("accuracy", acc)
-    mlflow.log_metric("f1_score", f1)
+mlflow.log_metric("accuracy", acc)
+mlflow.log_metric("f1_score", f1)
 
-    print("Accuracy:", acc)
-    print("F1 score:", f1)
+print("Accuracy:", acc)
+print("F1 score:", f1)
