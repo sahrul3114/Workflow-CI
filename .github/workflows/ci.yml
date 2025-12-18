@@ -22,4 +22,5 @@ jobs:
         run: pip install mlflow==2.19.0
 
       - name: Run MLflow Project
+        shell: bash -l {0}
         run: mlflow run MLProject
