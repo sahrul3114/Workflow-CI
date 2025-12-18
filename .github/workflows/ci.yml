@@ -10,16 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: 3.12.7
+          auto-update-conda: true
+          use-mamba: true
 
       - name: Install MLflow
         run: pip install mlflow==2.19.0
 
       - name: Run MLflow Project
+        shell: bash -l {0}
         run: mlflow run MLProject
