@@ -33,36 +33,17 @@ grid.fit(X_train, y_train)
 best_model = grid.best_estimator_
 print("Best Parameters:", grid.best_params_)
 
-# MLflow tracking
-mlflow.set_tracking_uri("http://127.0.0.1:5000/")
+mlflow.log_params(grid.best_params_)
 
-# Fix Windows path issue by explicitly setting artifact_location with file:// scheme
-experiment_name = "Skilled_Modelling_Tuning_Fixed"
-artifact_location = (BASE_DIR / "mlflow_artifacts").as_uri()
-
-try:
-    experiment_id = mlflow.create_experiment(
-        name=experiment_name,
-        artifact_location=artifact_location
-    )
-except mlflow.exceptions.MlflowException:
-    experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
-
-mlflow.set_experiment(experiment_name=experiment_name)
-
-with mlflow.start_run():
-    mlflow.log_params(grid.best_params_)
-
-    mlflow.sklearn.log_model(best_model, 
-    artifact_path="model")
+mlflow.sklearn.log_model(best_model, artifact_path="model")
     
+y_pred = best_model.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+f1  = f1_score(y_test, y_pred)
 
-    y_pred = best_model.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
-    f1  = f1_score(y_test, y_pred)
+mlflow.log_metric("accuracy", acc)
+mlflow.log_metric("f1_score", f1)
 
-    mlflow.log_metric("accuracy", acc)
-    mlflow.log_metric("f1_score", f1)
+print("Accuracy:", acc)
 
-    print("Accuracy:", acc)
-    print("F1 score:", f1)
+print("F1 score:", f1)
